@@ -5,6 +5,7 @@ that every later session's routes reuse. Session 3 added the models and
 training routers. Session 4 adds prediction and results comparison.
 """
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -13,6 +14,13 @@ from app.core.errors import AppError
 from app.routes import data, models, prediction, results, training
 
 app = FastAPI(title="ML Integration Platform")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(data.router)
 app.include_router(models.router)
